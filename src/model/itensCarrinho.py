@@ -1,5 +1,5 @@
 from datetime import datetime
-from model.carrinho import Carrinho
+from model.carrinhos import Carrinho
 from model.produto import Produto
 
 class ItensCarrinho:
