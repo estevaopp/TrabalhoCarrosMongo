@@ -40,7 +40,7 @@ class Relatorio:
         df_carrinho = pd.DataFrame(list(query_result))
         # Fecha a conexão com o Mongo
         mongo.close()
-        print(df_carrinho[["id_carrinho", "data_criacao", "cliente", "empresa", "itensCarrinho", "produto", "quantidade", "valor_unitario", "valor_total"]])
+        print(df_carrinho[["id_carrinho", "data_criacao", "cliente", "empresa", "itensCarrinho", "produto", "valor_total"]])
         input("Pressione Enter para Sair do Relatório de Carrinhos")
     
     def get_relatorio_itensCarrinhos(self):
@@ -62,9 +62,6 @@ class Relatorio:
                                                                         'codigo_itensCarrinho':1,
                                                                     'codigo_produto':'$produto.codigo_produto',
                                                                     'descricao_produto':'$produto.descricao_produto',
-                                                                    'quantidade':1,
-                                                                    'valor_unitario':1,
-                                                                    'valor_total':{'$multiply':['$quantidade','$valor_unitario']},
                                                                     '_id':0
                                                                     }}
                                                           ])
@@ -76,5 +73,5 @@ class Relatorio:
         # Fecha a conexão com o mongo
         mongo.close()
         # Exibe o resultado
-        print(df_itensCarrinho[["id_carrinho", "codigo_itensCarrinho", "codigo_produto", "descricao_produto", "quantidade", "valor_unitario", "valor_total"]])
+        print(df_itensCarrinho[["id_carrinho", "codigo_itensCarrinho", "codigo_produto", "descricao_produto", "valor_total"]])
         input("Pressione Enter para Sair do Relatório de Itens de Carrinhos")

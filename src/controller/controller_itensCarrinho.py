@@ -37,11 +37,6 @@ class Controller_ItensCarrinho:
         if produto == None:
             return None
 
-        # Solicita a quantidade de itens do carrinho para o produto selecionado
-        quantidade = float(input(f"Informe a quantidade de itens do produto {produto.get_descricao()}: "))
-        # Solicita o valor unitário do produto selecionado
-        valor_unitario = float(input(f"Informe o valor unitário do produto {produto.get_descricao()}: "))
-
         proximo_itensCarrinho = self.mongo.db["itensCarrinho"].aggregate([
                                                     {
                                                         '$group': {
@@ -64,13 +59,13 @@ class Controller_ItensCarrinho:
 
         proximo_itensCarrinho = int(list(proximo_itensCarrinho)[0]['proximo_itensCarrinho'])
         # Cria um dicionário para mapear as variáveis de entrada e saída
-        data = dict(codigo_itensCarrinho=proximo_itensCarrinho, valor_unitario=valor_unitario, quantidade=quantidade, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
+        data = dict(codigo_itensCarrinho=proximo_itensCarrinho, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
         # Insere e Recupera o código do novo item de carrinho
         id_itensCarrinho = self.mongo.db["itensCarrinho"].insert_one(data)
         # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
         df_itensCarrinho = self.recupera_itensCarrinho(id_itensCarrinho.inserted_id)
         # Cria um novo objeto Item de Carrinho
-        novo_itensCarrinho = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], df_itensCarrinho.quantidade.values[0], df_itensCarrinho.valor_unitario.values[0], carrinho, produto)
+        novo_itensCarrinho = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], carrinho, produto)
         # Exibe os atributos do novo Item de Carrinho
         print(novo_itensCarrinho.to_string())
         self.mongo.close()
@@ -101,15 +96,9 @@ class Controller_ItensCarrinho:
             if produto == None:
                 return None
 
-            # Solicita a quantidade de itens do carrinho para o produto selecionado
-            quantidade = float(input(f"Informe a quantidade de itens do produto {produto.get_descricao()}: "))
-            # Solicita o valor unitário do produto selecionado
-            valor_unitario = float(input(f"Informe o valor unitário do produto {produto.get_descricao()}: "))
-
             # Atualiza o item de carrinho existente
             self.mongo.db["itensCarrinho"].update_one({"codigo_itensCarrinho": codigo_itensCarrinho},
-                                                     {"$set": {"quantidade": quantidade,
-                                                               "valor_unitario":  valor_unitario,
+                                                     {"$set": {
                                                                "id_carrinho": int(carrinho.get_id_carrinho()),
                                                                "codigo_produto": int(produto.get_codigo())
                                                           }
@@ -117,7 +106,7 @@ class Controller_ItensCarrinho:
             # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
             df_itensCarrinho = self.recupera_itensCarrinho_codigo(codigo_itensCarrinho)
             # Cria um novo objeto Item de Carrinho
-            itensCarrinho_atualizado = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], df_itensCarrinho.quantidade.values[0], df_itensCarrinho.valor_unitario.values[0], carrinho, produto)
+            itensCarrinho_atualizado = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], carrinho, produto)
             # Exibe os atributos do item de carrinho
             print(itensCarrinho_atualizado.to_string())
             self.mongo.close()
@@ -148,8 +137,6 @@ class Controller_ItensCarrinho:
                 self.mongo.db["itensCarrinho"].delete_one({"codigo_itensCarrinho": codigo_itensCarrinho})
                 # Cria um novo objeto Item de Carrinho para informar que foi removido
                 itensCarrinho_excluido = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], 
-                                                  df_itensCarrinho.quantidade.values[0], 
-                                                  df_itensCarrinho.valor_unitario.values[0], 
                                                   carrinho, 
                                                   produto)
                 self.mongo.close()
@@ -167,14 +154,12 @@ class Controller_ItensCarrinho:
 
     def recupera_itensCarrinho(self, _id:ObjectId=None) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
-        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinho"].find({"_id": _id}, {"codigo_itensCarrinho":1, "quantidade": 1, "valor_unitario": 1, "id_carrinho": 1, "codigo_produto": 1, "_id": 0})))
+        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinho"].find({"_id": _id}, {"codigo_itensCarrinho":1, "id_carrinho": 1, "codigo_produto": 1, "_id": 0})))
         return df_carrinho
 
     def recupera_itensCarrinho_codigo(self, codigo:int=None) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
-        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinho"].find({"codigo_itensCarrinho": codigo}, {"codigo_itensCarrinho":1, 
-                                                                                                          "quantidade": 1, 
-                                                                                                          "valor_unitario": 1, 
+        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinho"].find({"codigo_itensCarrinho": codigo}, {"codigo_itensCarrinho":1,
                                                                                                           "id_carrinho": 1, 
                                                                                                           "codigo_produto": 1, 
                                                                                                           "_id": 0})))

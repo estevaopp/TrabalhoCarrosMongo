@@ -1,6 +1,6 @@
 from datetime import datetime
 from model.carrinhos import Carrinho
-from model.produto import Produto
+from model.produtos import Produto
 
 class ItensCarrinho:
     def __init__(self, 
