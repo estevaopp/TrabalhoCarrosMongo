@@ -44,7 +44,7 @@ class Controller_Pedido:
                                                                 '$group': {
                                                                     '_id': '$pedidos', 
                                                                     'proximo_pedido': {
-                                                                        '$max': '$codigo_pedido'
+                                                                        '$max': '$id_carrinho'
                                                                     }
                                                                 }
                                                             }, {
@@ -61,13 +61,13 @@ class Controller_Pedido:
 
         proximo_pedido = int(list(proximo_pedido)[0]['proximo_pedido'])
         # Cria um dicionário para mapear as variáveis de entrada e saída
-        data = dict(codigo_pedido=proximo_pedido, data_pedido=data_hoje, cpf=cliente.get_CPF(), cnpj=fornecedor.get_CNPJ())
+        data = dict(id_carrinho=proximo_pedido, data_criacao=data_hoje, cpf=cliente.get_CPF(), cnpj=fornecedor.get_CNPJ())
         # Insere e Recupera o código do novo pedido
         id_pedido = self.mongo.db["pedidos"].insert_one(data)
         # Recupera os dados do novo produto criado transformando em um DataFrame
         df_pedido = self.recupera_pedido(id_pedido.inserted_id)
         # Cria um novo objeto Produto
-        novo_pedido = Pedido(df_pedido.codigo_pedido.values[0], df_pedido.data_pedido.values[0], cliente, fornecedor)
+        novo_pedido = Pedido(df_pedido.id_carrinho.values[0], df_pedido.data_criacao.values[0], cliente, fornecedor)
         # Exibe os atributos do novo produto
         print(novo_pedido.to_string())
         self.mongo.close()
@@ -79,10 +79,10 @@ class Controller_Pedido:
         self.mongo.connect()
 
         # Solicita ao usuário o código do produto a ser alterado
-        codigo_pedido = int(input("Código do Pedido que irá alterar: "))        
+        id_carrinho = int(input("Código do Pedido que irá alterar: "))        
 
         # Verifica se o produto existe na base de dados
-        if not self.verifica_existencia_pedido(codigo_pedido):
+        if not self.verifica_existencia_pedido(id_carrinho):
 
             # Lista os clientes existentes para inserir no pedido
             self.relatorio.get_relatorio_clientes()
@@ -101,16 +101,16 @@ class Controller_Pedido:
             data_hoje = datetime.today().strftime("%m-%d-%Y")
 
             # Atualiza a descrição do produto existente
-            self.mongo.db["pedidos"].update_one({"codigo_pedido": codigo_pedido}, 
+            self.mongo.db["pedidos"].update_one({"id_carrinho": id_carrinho}, 
                                                 {"$set": {"cnpj": f'{fornecedor.get_CNPJ()}',
                                                           "cpf":  f'{cliente.get_CPF()}',
-                                                          "data_pedido": data_hoje
+                                                          "data_criacao": data_hoje
                                                           }
                                                 })
             # Recupera os dados do novo produto criado transformando em um DataFrame
-            df_pedido = self.recupera_pedido_codigo(codigo_pedido)
+            df_pedido = self.recupera_pedido_codigo(id_carrinho)
             # Cria um novo objeto Produto
-            pedido_atualizado = Pedido(df_pedido.codigo_pedido.values[0], df_pedido.data_pedido.values[0], cliente, fornecedor)
+            pedido_atualizado = Pedido(df_pedido.id_carrinho.values[0], df_pedido.data_criacao.values[0], cliente, fornecedor)
             # Exibe os atributos do novo produto
             print(pedido_atualizado.to_string())
             self.mongo.close()
@@ -118,7 +118,7 @@ class Controller_Pedido:
             return pedido_atualizado
         else:
             self.mongo.close()
-            print(f"O código {codigo_pedido} não existe.")
+            print(f"O código {id_carrinho} não existe.")
             return None
 
     def excluir_pedido(self):
@@ -126,33 +126,33 @@ class Controller_Pedido:
         self.mongo.connect()
 
         # Solicita ao usuário o código do produto a ser alterado
-        codigo_pedido = int(input("Código do Pedido que irá excluir: "))        
+        id_carrinho = int(input("Código do Pedido que irá excluir: "))        
 
         # Verifica se o produto existe na base de dados
-        if not self.verifica_existencia_pedido(codigo_pedido):            
+        if not self.verifica_existencia_pedido(id_carrinho):            
             # Recupera os dados do novo produto criado transformando em um DataFrame
-            df_pedido = self.recupera_pedido_codigo(codigo_pedido)
+            df_pedido = self.recupera_pedido_codigo(id_carrinho)
             cliente = self.valida_cliente(df_pedido.cpf.values[0])
             fornecedor = self.valida_fornecedor(df_pedido.cnpj.values[0])
             
-            opcao_excluir = input(f"Tem certeza que deseja excluir o pedido {codigo_pedido} [S ou N]: ")
+            opcao_excluir = input(f"Tem certeza que deseja excluir o pedido {id_carrinho} [S ou N]: ")
             if opcao_excluir.lower() == "s":
                 print("Atenção, caso o pedido possua itens, também serão excluídos!")
-                opcao_excluir = input(f"Tem certeza que deseja excluir o pedido {codigo_pedido} [S ou N]: ")
+                opcao_excluir = input(f"Tem certeza que deseja excluir o pedido {id_carrinho} [S ou N]: ")
                 if opcao_excluir.lower() == "s":
                     # Revome o produto da tabela
-                    self.mongo.db["itens_pedido"].delete_one({"codigo_pedido": codigo_pedido})
+                    self.mongo.db["itensCarrinho"].delete_one({"id_carrinho": id_carrinho})
                     print("Itens do pedido removidos com sucesso!")
-                    self.mongo.db["pedidos"].delete_one({"codigo_pedido": codigo_pedido})
+                    self.mongo.db["pedidos"].delete_one({"id_carrinho": id_carrinho})
                     # Cria um novo objeto Produto para informar que foi removido
-                    pedido_excluido = Pedido(df_pedido.codigo_pedido.values[0], df_pedido.data_pedido.values[0], cliente, fornecedor)
+                    pedido_excluido = Pedido(df_pedido.id_carrinho.values[0], df_pedido.data_criacao.values[0], cliente, fornecedor)
                     self.mongo.close()
                     # Exibe os atributos do produto excluído
                     print("Pedido Removido com Sucesso!")
                     print(pedido_excluido.to_string())
         else:
             self.mongo.close()
-            print(f"O código {codigo_pedido} não existe.")
+            print(f"O código {id_carrinho} não existe.")
 
     def verifica_existencia_pedido(self, codigo:int=None, external: bool = False) -> bool:
         # Recupera os dados do novo pedido criado transformando em um DataFrame
@@ -161,7 +161,7 @@ class Controller_Pedido:
 
     def recupera_pedido(self, _id:ObjectId=None) -> bool:
         # Recupera os dados do novo pedido criado transformando em um DataFrame
-        df_pedido = pd.DataFrame(list(self.mongo.db["pedidos"].find({"_id":_id}, {"codigo_pedido": 1, "data_pedido": 1, "cpf": 1, "cnpj": 1, "_id": 0})))
+        df_pedido = pd.DataFrame(list(self.mongo.db["pedidos"].find({"_id":_id}, {"id_carrinho": 1, "data_criacao": 1, "cpf": 1, "cnpj": 1, "_id": 0})))
         return df_pedido
 
     def recupera_pedido_codigo(self, codigo:int=None, external: bool = False) -> bool:
@@ -170,7 +170,7 @@ class Controller_Pedido:
             self.mongo.connect()
 
         # Recupera os dados do novo pedido criado transformando em um DataFrame
-        df_pedido = pd.DataFrame(list(self.mongo.db["pedidos"].find({"codigo_pedido": codigo}, {"codigo_pedido": 1, "data_pedido": 1, "cpf": 1, "cnpj": 1, "_id": 0})))
+        df_pedido = pd.DataFrame(list(self.mongo.db["pedidos"].find({"id_carrinho": codigo}, {"id_carrinho": 1, "data_criacao": 1, "cpf": 1, "cnpj": 1, "_id": 0})))
 
         if external:
             # Fecha a conexão com o Mongo

@@ -12,9 +12,9 @@ class Relatorio:
         mongo.connect()
         # Recupera os dados transformando em um DataFrame
         query_result = mongo.db.pedidos.aggregate([{
-                                                    "$lookup":{"from":"itens_pedido",
-                                                               "localField":"codigo_pedido",
-                                                               "foreignField":"codigo_pedido",
+                                                    "$lookup":{"from":"itensCarrinho",
+                                                               "localField":"id_carrinho",
+                                                               "foreignField":"id_carrinho",
                                                                "as":"item"
                                                               }
                                                    },
@@ -52,10 +52,10 @@ class Relatorio:
                                                     "$unwind": {"path": "$produto"}
                                                    },
                                                    {
-                                                    "$project": {"codigo_pedido": 1,
-                                                                 "codigo_item_pedido": "$item.codigo_item_pedido",
+                                                    "$project": {"id_carrinho": 1,
+                                                                 "codigo_itensCarrinho": "$item.codigo_itensCarrinho",
                                                                  "cliente": "$cliente.nome",
-                                                                 "data_pedido":1,
+                                                                 "data_criacao":1,
                                                                  "fornecedor": "$fornecedor.razao_social",
                                                                  "produto": "$produto.descricao_produto",
                                                                  "quantidade": "$item.quantidade",
@@ -106,14 +106,14 @@ class Relatorio:
                                                         '$project': {
                                                             'cnpj': 1, 
                                                             'qtd_pedidos': 1, 
-                                                            'pedido': '$pedido.codigo_pedido', 
+                                                            'pedido': '$pedido.id_carrinho', 
                                                             '_id': 0
                                                         }
                                                     }, {
                                                         '$lookup': {
-                                                            'from': 'itens_pedido', 
+                                                            'from': 'itensCarrinho', 
                                                             'localField': 'pedido', 
-                                                            'foreignField': 'codigo_pedido', 
+                                                            'foreignField': 'id_carrinho', 
                                                             'as': 'item'
                                                         }
                                                     }, {
@@ -255,8 +255,8 @@ class Relatorio:
                                                         }
                                                     }, {
                                                         '$project': {
-                                                            'codigo_pedido': 1, 
-                                                            'data_pedido': 1, 
+                                                            'id_carrinho': 1, 
+                                                            'data_criacao': 1, 
                                                             'empresa': '$fornecedor.nome_fantasia', 
                                                             'cpf': 1, 
                                                             '_id': 0
@@ -274,17 +274,17 @@ class Relatorio:
                                                         }
                                                     }, {
                                                         '$project': {
-                                                            'codigo_pedido': 1, 
-                                                            'data_pedido': 1, 
+                                                            'id_carrinho': 1, 
+                                                            'data_criacao': 1, 
                                                             'empresa': 1, 
                                                             'cliente': '$cliente.nome', 
                                                             '_id': 0
                                                         }
                                                     }, {
                                                         '$lookup': {
-                                                            'from': 'itens_pedido', 
-                                                            'localField': 'codigo_pedido', 
-                                                            'foreignField': 'codigo_pedido', 
+                                                            'from': 'itensCarrinho', 
+                                                            'localField': 'id_carrinho', 
+                                                            'foreignField': 'id_carrinho', 
                                                             'as': 'item'
                                                         }
                                                     }, {
@@ -293,11 +293,11 @@ class Relatorio:
                                                         }
                                                     }, {
                                                         '$project': {
-                                                            'codigo_pedido': 1, 
-                                                            'data_pedido': 1, 
+                                                            'id_carrinho': 1, 
+                                                            'data_criacao': 1, 
                                                             'empresa': 1, 
                                                             'cliente': 1, 
-                                                            'item_pedido': '$item.codigo_item_pedido', 
+                                                            'itensCarrinho': '$item.codigo_itensCarrinho', 
                                                             'quantidade': '$item.quantidade', 
                                                             'valor_unitario': '$item.valor_unitario', 
                                                             'valor_total': {
@@ -321,11 +321,11 @@ class Relatorio:
                                                         }
                                                     }, {
                                                         '$project': {
-                                                            'codigo_pedido': 1, 
-                                                            'data_pedido': 1, 
+                                                            'id_carrinho': 1, 
+                                                            'data_criacao': 1, 
                                                             'empresa': 1, 
                                                             'cliente': 1, 
-                                                            'item_pedido': 1, 
+                                                            'itensCarrinho': 1, 
                                                             'quantidade': 1, 
                                                             'valor_unitario': 1, 
                                                             'valor_total': 1, 
@@ -335,22 +335,22 @@ class Relatorio:
                                                     }, {
                                                         '$sort': {
                                                             'cliente': 1,
-                                                            'item_pedido': 1
+                                                            'itensCarrinho': 1
                                                         }
                                                     }
                                                 ])
         df_pedido = pd.DataFrame(list(query_result))
         # Fecha a conexão com o Mongo
         mongo.close()
-        print(df_pedido[["codigo_pedido", "data_pedido", "cliente", "empresa", "item_pedido", "produto", "quantidade", "valor_unitario", "valor_total"]])
+        print(df_pedido[["id_carrinho", "data_criacao", "cliente", "empresa", "itensCarrinho", "produto", "quantidade", "valor_unitario", "valor_total"]])
         input("Pressione Enter para Sair do Relatório de Pedidos")
     
-    def get_relatorio_itens_pedidos(self):
+    def get_relatorio_itensCarrinhos(self):
         # Cria uma nova conexão com o banco
         mongo = MongoQueries()
         mongo.connect()
         # Realiza uma consulta no mongo e retorna o cursor resultante para a variável
-        query_result = mongo.db['itens_pedido'].aggregate([{
+        query_result = mongo.db['itensCarrinho'].aggregate([{
                                                             '$lookup':{'from':'produtos',
                                                                        'localField':'codigo_produto',
                                                                        'foreignField':'codigo_produto',
@@ -360,8 +360,8 @@ class Relatorio:
                                                            {
                                                             '$unwind':{"path": "$produto"}
                                                            },
-                                                           {'$project':{'codigo_pedido':1, 
-                                                                        'codigo_item_pedido':1,
+                                                           {'$project':{'id_carrinho':1, 
+                                                                        'codigo_itensCarrinho':1,
                                                                     'codigo_produto':'$produto.codigo_produto',
                                                                     'descricao_produto':'$produto.descricao_produto',
                                                                     'quantidade':1,
@@ -371,12 +371,12 @@ class Relatorio:
                                                                     }}
                                                           ])
         # Converte o cursos em lista e em DataFrame
-        df_itens_pedido = pd.DataFrame(list(query_result))
+        df_itensCarrinho = pd.DataFrame(list(query_result))
         # Troca o tipo das colunas
-        df_itens_pedido.codigo_item_pedido = df_itens_pedido.codigo_item_pedido.astype(int)
-        df_itens_pedido.codigo_pedido = df_itens_pedido.codigo_pedido.astype(int)
+        df_itensCarrinho.codigo_itensCarrinho = df_itensCarrinho.codigo_itensCarrinho.astype(int)
+        df_itensCarrinho.id_carrinho = df_itensCarrinho.id_carrinho.astype(int)
         # Fecha a conexão com o mongo
         mongo.close()
         # Exibe o resultado
-        print(df_itens_pedido[["codigo_pedido", "codigo_item_pedido", "codigo_produto", "descricao_produto", "quantidade", "valor_unitario", "valor_total"]])
+        print(df_itensCarrinho[["id_carrinho", "codigo_itensCarrinho", "codigo_produto", "descricao_produto", "quantidade", "valor_unitario", "valor_total"]])
         input("Pressione Enter para Sair do Relatório de Itens de Pedidos")

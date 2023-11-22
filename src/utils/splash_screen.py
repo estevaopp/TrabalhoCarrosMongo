@@ -24,7 +24,7 @@ class SplashScreen:
         #      2 - CLIENTES:         {str(self.get_documents_count(collection_name="clientes")).rjust(5)}
         #      3 - FORNECEDORES:     {str(self.get_documents_count(collection_name="fornecedores")).rjust(5)}
         #      4 - PEDIDOS:          {str(self.get_documents_count(collection_name="pedidos")).rjust(5)}
-        #      5 - ITENS DE PEDIDOS: {str(self.get_documents_count(collection_name="itens_pedido")).rjust(5)}
+        #      5 - ITENS DE PEDIDOS: {str(self.get_documents_count(collection_name="itensCarrinho")).rjust(5)}
         #
         #  CRIADO POR: {self.created_by}
         #

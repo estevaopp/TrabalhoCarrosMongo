@@ -3,7 +3,7 @@ from conexion.mongo_queries import MongoQueries
 from conexion.oracle_queries import OracleQueries
 import json
 
-LIST_OF_COLLECTIONS = ["produtos", "pedidos", "itens_pedido"]
+LIST_OF_COLLECTIONS = ["produtos", "pedidos", "itensCarrinho"]
 logger = logging.getLogger(name="Example_CRUD_MongoDB")
 logger.setLevel(level=logging.WARNING)
 mongo = MongoQueries()
@@ -44,7 +44,7 @@ def extract_and_insert():
     for collection in LIST_OF_COLLECTIONS:
         df = oracle.sqlToDataFrame(sql.format(table=collection))
         if collection == "pedidos":
-            df["data_pedido"] = df["data_pedido"].dt.strftime("%m-%d-%Y")
+            df["data_criacao"] = df["data_criacao"].dt.strftime("%m-%d-%Y")
         logger.warning(f"data extracted from database Oracle labdatabase.{collection}")
         records = json.loads(df.T.to_json()).values()
         logger.warning("data converted to json")

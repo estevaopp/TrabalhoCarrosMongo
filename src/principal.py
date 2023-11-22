@@ -2,25 +2,23 @@ from utils import config
 from utils.splash_screen import SplashScreen
 from reports.relatorios import Relatorio
 from controller.controller_produto import Controller_Produto
-from controller.controller_cliente import Controller_Cliente
-from controller.controller_fornecedor import Controller_Fornecedor
-from controller.controller_pedido import Controller_Pedido
-from controller.controller_item_pedido import Controller_Item_Pedido
+from controller.controller_carrinho import Controller_Carrinho
+from controller.controller_itensCarrinho import Controller_ItensCarrinho
 
 tela_inicial = SplashScreen()
 relatorio = Relatorio()
 ctrl_produto = Controller_Produto()
 ctrl_cliente = Controller_Cliente()
 ctrl_fornecedor = Controller_Fornecedor()
-ctrl_pedido = Controller_Pedido()
-ctrl_item_pedido = Controller_Item_Pedido()
+ctrl_carrinho = Controller_Carrinho()
+ctrl_itensCarrinho = Controller_ItensCarrinho()
 
 def reports(opcao_relatorio:int=0):
 
     if opcao_relatorio == 1:
-        relatorio.get_relatorio_pedidos_por_fornecedor()            
+        relatorio.get_relatorio_carrinhos_por_fornecedor()            
     elif opcao_relatorio == 2:
-        relatorio.get_relatorio_pedidos()
+        relatorio.get_relatorio_carrinhos()
     elif opcao_relatorio == 3:
         relatorio.get_relatorio_produtos()
     elif opcao_relatorio == 4:
@@ -28,7 +26,7 @@ def reports(opcao_relatorio:int=0):
     elif opcao_relatorio == 5:
         relatorio.get_relatorio_fornecedores()
     elif opcao_relatorio == 6:
-        relatorio.get_relatorio_itens_pedidos()
+        relatorio.get_relatorio_itens_carrinhos()
 
 def inserir(opcao_inserir:int=0):
 
@@ -39,9 +37,9 @@ def inserir(opcao_inserir:int=0):
     elif opcao_inserir == 3:
         novo_fornecedor = ctrl_fornecedor.inserir_fornecedor()
     elif opcao_inserir == 4:
-        novo_pedido = ctrl_pedido.inserir_pedido()
+        novo_carrinho = ctrl_carrinho.inserir_carrinho()
     elif opcao_inserir == 5:
-        novo_item_pedido = ctrl_item_pedido.inserir_item_pedido()
+        novo_itensCarrinho = ctrl_itensCarrinho.inserir_itensCarrinho()
 
 def atualizar(opcao_atualizar:int=0):
 
@@ -55,11 +53,11 @@ def atualizar(opcao_atualizar:int=0):
         relatorio.get_relatorio_fornecedores()
         fornecedor_atualizado = ctrl_fornecedor.atualizar_fornecedor()
     elif opcao_atualizar == 4:
-        relatorio.get_relatorio_pedidos()
-        pedido_atualizado = ctrl_pedido.atualizar_pedido()
+        relatorio.get_relatorio_carrinhos()
+        carrinho_atualizado = ctrl_carrinho.atualizar_carrinho()
     elif opcao_atualizar == 5:
-        relatorio.get_relatorio_itens_pedidos()
-        item_pedido_atualizado = ctrl_item_pedido.atualizar_item_pedido()
+        relatorio.get_relatorio_itens_carrinhos()
+        itensCarrinho_atualizado = ctrl_itensCarrinho.atualizar_itensCarrinho()
 
 def excluir(opcao_excluir:int=0):
 
@@ -73,11 +71,11 @@ def excluir(opcao_excluir:int=0):
         relatorio.get_relatorio_fornecedores()
         ctrl_fornecedor.excluir_fornecedor()
     elif opcao_excluir == 4:                
-        relatorio.get_relatorio_pedidos()
-        ctrl_pedido.excluir_pedido()
+        relatorio.get_relatorio_carrinhos()
+        ctrl_carrinho.excluir_carrinho()
     elif opcao_excluir == 5:
-        relatorio.get_relatorio_itens_pedidos()
-        ctrl_item_pedido.excluir_item_pedido()
+        relatorio.get_relatorio_itens_carrinhos()
+        ctrl_itensCarrinho.excluir_itensCarrinho()
 
 def run():
     print(tela_inicial.get_updated_screen())
