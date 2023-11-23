@@ -131,13 +131,13 @@ class Controller_ItensCarrinho:
         if not self.verifica_existencia_itensCarrinho(codigo_itensCarrinho):            
             # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
             df_itensCarrinho = self.recupera_itensCarrinho_codigo(codigo_itensCarrinho)
-            carrinho = self.valida_carrinho(int(df_itensCarrinho.id_carrinho.values[0]))
+            carrinho = self.valida_carrinho(df_itensCarrinho.id_carrinho.values[0])
             produto = self.valida_produto(int(df_itensCarrinho.codigo_produto.values[0]))
             
             opcao_excluir = input(f"Tem certeza que deseja excluir o item de carrinho {codigo_itensCarrinho} [S ou N]: ")
             if opcao_excluir.lower() == "s":
                 # Revome o item de carrinho da tabela
-                self.mongo.db["itensCarrinhos"].delete_one({"codigo_itensCarrinho": codigo_itensCarrinho})
+                self.mongo.db["itensCarrinhos"].delete_one({"codigo_itenscarrinho": codigo_itensCarrinho})
                 # Cria um novo objeto Item de Carrinho para informar que foi removido
                 itensCarrinho_excluido = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], 
                                                   carrinho, 
