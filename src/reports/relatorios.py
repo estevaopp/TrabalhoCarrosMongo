@@ -21,7 +21,8 @@ class Relatorio:
         df_produto = pd.DataFrame(list(query_result))
         # Fecha a conexão com o Mongo
         mongo.close()
-        print(df_produto["codigo_produto", "descricao_produto"])        
+        # Exibe o resultado
+        print(df_produto)        
         input("Pressione Enter para Sair do Relatório de Produtos")
 
 
