@@ -140,6 +140,7 @@ class Controller_ItensCarrinho:
                 self.mongo.db["itensCarrinhos"].delete_one({"codigo_itenscarrinho": codigo_itensCarrinho})
                 # Cria um novo objeto Item de Carrinho para informar que foi removido
                 itensCarrinho_excluido = ItensCarrinho(df_itensCarrinho.codigo_itenscarrinho.values[0], 
+                                                       df_itensCarrinho.data_itenscarrinho.values[0],
                                                   carrinho, 
                                                   produto)
                 self.mongo.close()
