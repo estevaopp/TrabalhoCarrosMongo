@@ -57,7 +57,7 @@ class Controller_ItensCarrinho:
                                                     }
                                                 ])
 
-        proximo_itensCarrinho = int(list(proximo_itensCarrinho)[0]['proximo_itensCarrinho'])
+        proximo_itensCarrinho = int(input("Digite o id do item carrinho: "))
         # Cria um dicionário para mapear as variáveis de entrada e saída
         data = dict(codigo_itensCarrinho=proximo_itensCarrinho, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
         # Insere e Recupera o código do novo item de carrinho
