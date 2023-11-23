@@ -68,7 +68,7 @@ class Controller_ItensCarrinho:
         # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
         df_itensCarrinho = self.recupera_itensCarrinho(id_itensCarrinho.inserted_id)
         # Cria um novo objeto Item de Carrinho
-        novo_itensCarrinho = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], df_itensCarrinho.data_itensCarrinho.values[0], carrinho, produto)
+        novo_itensCarrinho = ItensCarrinho(df_itensCarrinho.codigo_itenscarrinho.values[0], df_itensCarrinho.data_itenscarrinho.values[0], carrinho, produto)
         # Exibe os atributos do novo Item de Carrinho
         print(novo_itensCarrinho.to_string())
         self.mongo.close()
@@ -100,7 +100,7 @@ class Controller_ItensCarrinho:
                 return None
 
             # Atualiza o item de carrinho existente
-            self.mongo.db["itensCarrinhos"].update_one({"codigo_itensCarrinho": codigo_itensCarrinho},
+            self.mongo.db["itensCarrinhos"].update_one({"codigo_itenscarrinho": codigo_itensCarrinho},
                                                      {"$set": {
                                                                "id_carrinho": int(carrinho.get_id_carrinho()),
                                                                "codigo_produto": int(produto.get_codigo())
@@ -109,7 +109,7 @@ class Controller_ItensCarrinho:
             # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
             df_itensCarrinho = self.recupera_itensCarrinho_codigo(codigo_itensCarrinho)
             # Cria um novo objeto Item de Carrinho
-            itensCarrinho_atualizado = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], carrinho, produto)
+            itensCarrinho_atualizado = ItensCarrinho(df_itensCarrinho.codigo_itenscarrinho.values[0], carrinho, produto)
             # Exibe os atributos do item de carrinho
             print(itensCarrinho_atualizado.to_string())
             self.mongo.close()
