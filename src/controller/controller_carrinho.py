@@ -113,7 +113,7 @@ class Controller_Carrinho:
             self.mongo.connect()
 
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
-        df_carrinho = pd.DataFrame(list(self.mongo.db["carrinhos"].find({"id_carrinho": codigo}, {"id_carrinho": 1, "data_criacao": 1, "cpf": 1, "cnpj": 1, "_id": 0})))
+        df_carrinho = pd.DataFrame(list(self.mongo.db["carrinhos"].find({"id_carrinho": codigo}, {"id_carrinho": 1, "data_criacao": 1, "_id": 0})))
 
         if external:
             # Fecha a conexão com o Mongo

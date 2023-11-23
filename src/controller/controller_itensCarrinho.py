@@ -84,7 +84,7 @@ class Controller_ItensCarrinho:
 
             # Lista os carrinho existentes para inserir no item de carrinho
             self.relatorio.get_relatorio_carrinhos()
-            id_carrinho = int(str(input("Digite o número do Carrinho: ")))
+            id_carrinho = input("Digite o número do Carrinho: ")
             carrinho = self.valida_carrinho(id_carrinho)
             if carrinho == None:
                 return None

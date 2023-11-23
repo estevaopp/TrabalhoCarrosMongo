@@ -49,8 +49,8 @@ class Relatorio:
         mongo.connect()
         # Realiza uma consulta no mongo e retorna o cursor resultante para a variável
         query_result = mongo.db['itensCarrinhos'].find({}, 
-                                                 {"codigo_itensCarrinho": 1, 
-                                                  "data_itensCarrinho": 1, 
+                                                 {"codigo_itenscarrinho": 1, 
+                                                  "data_itenscarrinho": 1, 
                                                   "codigo_produto": 1, 
                                                   "id_carrinho": 1, 
                                                   "_id": 0
@@ -58,8 +58,8 @@ class Relatorio:
         # Converte o cursos em lista e em DataFrame
         df_itensCarrinho = pd.DataFrame(list(query_result))
         # Troca o tipo das colunas
-        # df_itensCarrinho.codigo_itensCarrinho = df_itensCarrinho.codigo_itensCarrinho.astype(int)
-        df_itensCarrinho.id_carrinho = df_itensCarrinho.id_carrinho.astype(int)
+        df_itensCarrinho.codigo_itensCarrinho = df_itensCarrinho.codigo_itensCarrinho.astype(int)
+        df_itensCarrinho.id_carrinho = df_itensCarrinho.id_carrinho
         # Fecha a conexão com o mongo
         mongo.close()
         # Exibe o resultado
