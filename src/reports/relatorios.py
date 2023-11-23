@@ -48,23 +48,13 @@ class Relatorio:
         mongo = MongoQueries()
         mongo.connect()
         # Realiza uma consulta no mongo e retorna o cursor resultante para a variável
-        query_result = mongo.db['itensCarrinhos'].aggregate([{
-                                                            '$lookup':{'from':'produtos',
-                                                                       'localField':'codigo_produto',
-                                                                       'foreignField':'codigo_produto',
-                                                                       'as':'produto'
-                                                                      }
-                                                           },
-                                                           {
-                                                            '$unwind':{"path": "$produto"}
-                                                           },
-                                                           {'$project':{'id_carrinho':1, 
-                                                                        'codigo_itensCarrinho':1,
-                                                                    'codigo_produto':'$produto.codigo_produto',
-                                                                    'descricao_produto':'$produto.descricao_produto',
-                                                                    '_id':0
-                                                                    }}
-                                                          ])
+        query_result = mongo.db['itensCarrinhos'].find({}, 
+                                                 {"codigo_itensCarrinho": 1, 
+                                                  "data_itensCarrinho": 1, 
+                                                  "codigo_produto": 1, 
+                                                  "id_carrinho": 1, 
+                                                  "_id": 0
+                                                 }).sort("id_carrinho", ASCENDING)
         # Converte o cursos em lista e em DataFrame
         df_itensCarrinho = pd.DataFrame(list(query_result))
         # Troca o tipo das colunas
@@ -73,5 +63,5 @@ class Relatorio:
         # Fecha a conexão com o mongo
         mongo.close()
         # Exibe o resultado
-        print(df_itensCarrinho[["id_carrinho", "codigo_itensCarrinho", "codigo_produto", "descricao_produto", "valor_total"]])
+        print(df_itensCarrinho[["id_carrinho", "codigo_itensCarrinho", "data_itensCarrinho","codigo_produto"]])
         input("Pressione Enter para Sair do Relatório de Itens de Carrinhos")

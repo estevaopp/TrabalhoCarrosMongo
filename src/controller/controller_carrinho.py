@@ -19,7 +19,7 @@ class Controller_Carrinho:
 
         data_hoje = datetime.today().strftime("%m-%d-%Y")
 
-        proximo_carrinho = input("Selecione o Id do carrinho")
+        proximo_carrinho = input("Selecione o Id do carrinho:  ")
         # Cria um dicionário para mapear as variáveis de entrada e saída
         data = dict(id_carrinho=proximo_carrinho, data_criacao=data_hoje)
         # Insere e Recupera o código do novo carrinho
