@@ -84,7 +84,7 @@ class Controller_Carrinho:
                 opcao_excluir = input(f"Tem certeza que deseja excluir o carrinho {id_carrinho} [S ou N]: ")
                 if opcao_excluir.lower() == "s":
                     # Revome o produto da tabela
-                    self.mongo.db["itensCarrinho"].delete_one({"id_carrinho": id_carrinho})
+                    self.mongo.db["itensCarrinhos"].delete_one({"id_carrinho": id_carrinho})
                     print("Itens do carrinho removidos com sucesso!")
                     self.mongo.db["carrinhos"].delete_one({"id_carrinho": id_carrinho})
                     # Cria um novo objeto Produto para informar que foi removido

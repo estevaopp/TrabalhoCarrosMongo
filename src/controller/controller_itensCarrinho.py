@@ -40,7 +40,7 @@ class Controller_ItensCarrinho:
         if produto == None:
             return None
 
-        proximo_itensCarrinho = self.mongo.db["itensCarrinho"].aggregate([
+        proximo_itensCarrinho = self.mongo.db["itensCarrinhos"].aggregate([
                                                     {
                                                         '$group': {
                                                             '_id': '$itensCarrinho', 
@@ -64,7 +64,7 @@ class Controller_ItensCarrinho:
         # Cria um dicionário para mapear as variáveis de entrada e saída
         data = dict(codigo_itensCarrinho=proximo_itensCarrinho, data_itensCarrinho=data_hoje, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
         # Insere e Recupera o código do novo item de carrinho
-        id_itensCarrinho = self.mongo.db["itensCarrinho"].insert_one(data)
+        id_itensCarrinho = self.mongo.db["itensCarrinhos"].insert_one(data)
         # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
         df_itensCarrinho = self.recupera_itensCarrinho(id_itensCarrinho.inserted_id)
         # Cria um novo objeto Item de Carrinho
@@ -100,7 +100,7 @@ class Controller_ItensCarrinho:
                 return None
 
             # Atualiza o item de carrinho existente
-            self.mongo.db["itensCarrinho"].update_one({"codigo_itensCarrinho": codigo_itensCarrinho},
+            self.mongo.db["itensCarrinhos"].update_one({"codigo_itensCarrinho": codigo_itensCarrinho},
                                                      {"$set": {
                                                                "id_carrinho": int(carrinho.get_id_carrinho()),
                                                                "codigo_produto": int(produto.get_codigo())
@@ -137,7 +137,7 @@ class Controller_ItensCarrinho:
             opcao_excluir = input(f"Tem certeza que deseja excluir o item de carrinho {codigo_itensCarrinho} [S ou N]: ")
             if opcao_excluir.lower() == "s":
                 # Revome o item de carrinho da tabela
-                self.mongo.db["itensCarrinho"].delete_one({"codigo_itensCarrinho": codigo_itensCarrinho})
+                self.mongo.db["itensCarrinhos"].delete_one({"codigo_itensCarrinho": codigo_itensCarrinho})
                 # Cria um novo objeto Item de Carrinho para informar que foi removido
                 itensCarrinho_excluido = ItensCarrinho(df_itensCarrinho.codigo_itensCarrinho.values[0], 
                                                   carrinho, 
@@ -157,12 +157,12 @@ class Controller_ItensCarrinho:
 
     def recupera_itensCarrinho(self, _id:ObjectId=None) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
-        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinho"].find({"_id": _id}, {"codigo_itensCarrinho":1, "data_itensCarrinho":1, "id_carrinho": 1, "codigo_produto": 1, "_id": 0})))
+        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinhos"].find({"_id": _id}, {"codigo_itensCarrinho":1, "data_itensCarrinho":1, "id_carrinho": 1, "codigo_produto": 1, "_id": 0})))
         return df_carrinho
 
     def recupera_itensCarrinho_codigo(self, codigo:int=None) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
-        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinho"].find({"codigo_itensCarrinho": codigo}, {"codigo_itensCarrinho":1,
+        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinhos"].find({"codigo_itensCarrinho": codigo}, {"codigo_itensCarrinho":1,
                                                                                                           "data_itensCarrinho":1,
                                                                                                           "id_carrinho": 1, 
                                                                                                           "codigo_produto": 1, 
