@@ -58,7 +58,6 @@ class Relatorio:
         # Converte o cursos em lista e em DataFrame
         df_itensCarrinho = pd.DataFrame(list(query_result))
         # Troca o tipo das colunas
-        df_itensCarrinho.codigo_itenscarrinho = df_itensCarrinho.codigo_itenscarrinho.astype(int)
         df_itensCarrinho.id_carrinho = df_itensCarrinho.id_carrinho
         # Fecha a conexão com o mongo
         mongo.close()
