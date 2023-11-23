@@ -165,7 +165,7 @@ class Controller_ItensCarrinho:
                                                                                                           "_id": 0})))
         return df_carrinho
 
-    def valida_carrinho(self, id_carrinho:int=None) -> Carrinho:
+    def valida_carrinho(self, id_carrinho:str=None) -> Carrinho:
         if self.ctrl_carrinho.verifica_existencia_carrinho(id_carrinho, external=True):
             print(f"O carrinho {id_carrinho} informado não existe na base.")
             return None

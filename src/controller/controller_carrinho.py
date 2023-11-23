@@ -97,7 +97,7 @@ class Controller_Carrinho:
             self.mongo.close()
             print(f"O código {id_carrinho} não existe.")
 
-    def verifica_existencia_carrinho(self, codigo:int=None, external: bool = False) -> bool:
+    def verifica_existencia_carrinho(self, codigo:str=None, external: bool = False) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
         df_carrinho = self.recupera_carrinho_codigo(codigo=codigo, external=external)
         return df_carrinho.empty
