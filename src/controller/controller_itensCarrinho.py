@@ -157,13 +157,13 @@ class Controller_ItensCarrinho:
 
     def recupera_itensCarrinho(self, _id:ObjectId=None) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
-        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinhos"].find({"_id": _id}, {"codigo_itensCarrinho":1, "data_itensCarrinho":1, "id_carrinho": 1, "codigo_produto": 1, "_id": 0})))
+        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinhos"].find({"_id": _id}, {"codigo_itenscarrinho":1, "data_itenscarrinho":1, "id_carrinho": 1, "codigo_produto": 1, "_id": 0})))
         return df_carrinho
 
     def recupera_itensCarrinho_codigo(self, codigo:int=None) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
-        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinhos"].find({"codigo_itensCarrinho": codigo}, {"codigo_itensCarrinho":1,
-                                                                                                          "data_itensCarrinho":1,
+        df_carrinho = pd.DataFrame(list(self.mongo.db["itensCarrinhos"].find({"codigo_itensCarrinho": codigo}, {"codigo_itenscarrinho":1,
+                                                                                                          "data_itenscarrinho":1,
                                                                                                           "id_carrinho": 1, 
                                                                                                           "codigo_produto": 1, 
                                                                                                           "_id": 0})))
