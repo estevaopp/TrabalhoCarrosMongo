@@ -7,10 +7,9 @@ MENU_PRINCIPAL = """Menu Principal
 """
 
 MENU_RELATORIOS = """Relatórios
-1 - Relatório de ItensCarrinhos por Carrinho
-2 - Relatório de ItensCarrinhos
-3 - Relatório de Carrinhos
-4 - Relatório de Produtos
+1 - Relatório de ItensCarrinhos
+2 - Relatório de Carrinhos
+3 - Relatório de Produtos
 0 - Sair
 """
 
