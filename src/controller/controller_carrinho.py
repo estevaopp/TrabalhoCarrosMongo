@@ -100,6 +100,7 @@ class Controller_Carrinho:
     def verifica_existencia_carrinho(self, codigo:str=None, external: bool = False) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
         df_carrinho = self.recupera_carrinho_codigo(codigo=codigo, external=external)
+        print(df_carrinho.empty)
         return df_carrinho.empty
 
     def recupera_carrinho(self, _id:ObjectId=None) -> bool:
