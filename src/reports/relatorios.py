@@ -14,15 +14,15 @@ class Relatorio:
         mongo.connect()
         # Recupera os dados transformando em um DataFrame
         query_result = mongo.db["produtos"].find({}, 
-                                                 {"codigo_produto": 1, 
-                                                  "descricao_produto": 1, 
+                                                 {"codigo": 1, 
+                                                  "descricao": 1, 
                                                   "_id": 0
-                                                 }).sort("descricao_produto", ASCENDING)
+                                                 }).sort("codigo", ASCENDING)
         df_produto = pd.DataFrame(list(query_result))
         # Fecha a conexão com o Mongo
         mongo.close()
         # Exibe o resultado
-        print(df_produto["codigo_produto", "descricao_produto"])        
+        print(df_produto["codigo", "descricao"])        
         input("Pressione Enter para Sair do Relatório de Produtos")
 
 
