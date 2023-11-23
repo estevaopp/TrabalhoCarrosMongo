@@ -63,5 +63,5 @@ class Relatorio:
         # Fecha a conexão com o mongo
         mongo.close()
         # Exibe o resultado
-        print(df_itensCarrinho[["id_carrinho", "codigo_itensCarrinho", "data_itensCarrinho","codigo_produto"]])
+        print(df_itensCarrinho)
         input("Pressione Enter para Sair do Relatório de Itens de Carrinhos")
