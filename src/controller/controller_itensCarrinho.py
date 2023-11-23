@@ -62,7 +62,7 @@ class Controller_ItensCarrinho:
 
         proximo_itensCarrinho = int(input("Digite o id do item carrinho: "))
         # Cria um dicionário para mapear as variáveis de entrada e saída
-        data = dict(codigo_itensCarrinho=proximo_itensCarrinho, data_itensCarrinho=data_hoje, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
+        data = dict(codigo_itenscarrinho=proximo_itensCarrinho, data_itenscarrinho=data_hoje, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
         # Insere e Recupera o código do novo item de carrinho
         id_itensCarrinho = self.mongo.db["itensCarrinhos"].insert_one(data)
         # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
