@@ -40,4 +40,4 @@ class ItensCarrinho:
         return self.produto
 
     def to_string(self) -> str:
-        return f"Agendameto: {self.get_codigo_itensCarrinho()} | Data: {self.get_data_itensCarrinho()} | Carrinho: {self.get_carrinho().get_id_carrinho()} | Produto: {self.get_produto().get_nome()}"
+        return f"Agendameto: {self.get_codigo_itensCarrinho()} | Data: {self.get_data_itensCarrinho()} | Carrinho: {self.get_carrinho().get_id_carrinho()} | Produto: {self.get_produto().get_descricao()}"
