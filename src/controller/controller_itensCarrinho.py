@@ -109,7 +109,7 @@ class Controller_ItensCarrinho:
             # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
             df_itensCarrinho = self.recupera_itensCarrinho_codigo(codigo_itensCarrinho)
             # Cria um novo objeto Item de Carrinho
-            itensCarrinho_atualizado = ItensCarrinho(df_itensCarrinho.codigo_itenscarrinho.values[0], carrinho, produto)
+            itensCarrinho_atualizado = ItensCarrinho(df_itensCarrinho.codigo_itenscarrinho.values[0], df_itensCarrinho.data_itenscarrinho.values[0],carrinho, produto)
             # Exibe os atributos do item de carrinho
             print(itensCarrinho_atualizado.to_string())
             self.mongo.close()

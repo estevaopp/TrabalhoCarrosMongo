@@ -39,7 +39,7 @@ class Controller_Carrinho:
         self.mongo.connect()
 
         # Solicita ao usuário o código do produto a ser alterado
-        id_carrinho = int(input("Código do Carrinho que irá alterar: "))        
+        id_carrinho = input("Código do Carrinho que irá alterar: ")       
 
         # Verifica se o produto existe na base de dados
         if not self.verifica_existencia_carrinho(id_carrinho):
@@ -71,7 +71,7 @@ class Controller_Carrinho:
         self.mongo.connect()
 
         # Solicita ao usuário o código do produto a ser alterado
-        id_carrinho = int(input("Código do Carrinho que irá excluir: "))        
+        id_carrinho = input("Código do Carrinho que irá excluir: ")        
 
         # Verifica se o produto existe na base de dados
         if not self.verifica_existencia_carrinho(id_carrinho):            
@@ -100,7 +100,6 @@ class Controller_Carrinho:
     def verifica_existencia_carrinho(self, codigo:str=None, external: bool = False) -> bool:
         # Recupera os dados do novo carrinho criado transformando em um DataFrame
         df_carrinho = self.recupera_carrinho_codigo(codigo=codigo, external=external)
-        print(df_carrinho.empty)
         return df_carrinho.empty
 
     def recupera_carrinho(self, _id:ObjectId=None) -> bool:
