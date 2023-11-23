@@ -22,7 +22,7 @@ class Relatorio:
         # Fecha a conexão com o Mongo
         mongo.close()
         # Exibe o resultado
-        print(df_produto)        
+        print(df_produto["codigo_produto", "descricao_produto"])        
         input("Pressione Enter para Sair do Relatório de Produtos")
 
 
