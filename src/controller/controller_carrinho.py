@@ -107,7 +107,7 @@ class Controller_Carrinho:
         df_carrinho = pd.DataFrame(list(self.mongo.db["carrinhos"].find({"_id":_id}, {"id_carrinho": 1, "data_criacao": 1, "_id": 0})))
         return df_carrinho
 
-    def recupera_carrinho_codigo(self, codigo:int=None, external: bool = False) -> bool:
+    def recupera_carrinho_codigo(self, codigo:str=None, external: bool = False) -> bool:
         if external:
             # Cria uma nova conexão com o banco que permite alteração
             self.mongo.connect()
