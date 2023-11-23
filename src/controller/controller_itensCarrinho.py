@@ -11,6 +11,7 @@ from controller.controller_produto import Controller_Produto
 from controller.controller_carrinho import Controller_Carrinho
 
 from conexion.mongo_queries import MongoQueries
+from datetime import datetime
 
 class Controller_ItensCarrinho:
     def __init__(self):
@@ -22,6 +23,8 @@ class Controller_ItensCarrinho:
     def inserir_itensCarrinho(self) -> ItensCarrinho:
         # Cria uma nova conexão com o banco
         self.mongo.connect()
+
+        data_hoje = datetime.today().strftime("%m-%d-%Y")
         
         # Lista os carrinho existentes para inserir no item de carrinho
         self.relatorio.get_relatorio_carrinhos()
@@ -59,7 +62,7 @@ class Controller_ItensCarrinho:
 
         proximo_itensCarrinho = int(input("Digite o id do item carrinho: "))
         # Cria um dicionário para mapear as variáveis de entrada e saída
-        data = dict(codigo_itensCarrinho=proximo_itensCarrinho, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
+        data = dict(codigo_itensCarrinho=proximo_itensCarrinho, data_itensCarrinho=data_hoje, id_carrinho=int(carrinho.get_id_carrinho()), codigo_produto=int(produto.get_codigo()))
         # Insere e Recupera o código do novo item de carrinho
         id_itensCarrinho = self.mongo.db["itensCarrinho"].insert_one(data)
         # Recupera os dados do novo item de carrinho criado transformando em um DataFrame
