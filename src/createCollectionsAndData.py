@@ -3,7 +3,7 @@ from conexion.mongo_queries import MongoQueries
 from conexion.oracle_queries import OracleQueries
 import json
 
-LIST_OF_COLLECTIONS = ["produtos", "carrinho", "itensCarrinho"]
+LIST_OF_COLLECTIONS = ["produtos", "carrinhos", "itensCarrinhos"]
 logger = logging.getLogger(name="Example_CRUD_MongoDB")
 logger.setLevel(level=logging.WARNING)
 mongo = MongoQueries()

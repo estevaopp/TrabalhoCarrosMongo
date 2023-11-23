@@ -22,7 +22,7 @@ class SplashScreen:
         #  TOTAL DE REGISTROS:                                    
         #      1 - PRODUTOS:         {str(self.get_documents_count(collection_name="produtos")).rjust(5)}
         #      2 - CARRINHOS:          {str(self.get_documents_count(collection_name="carrinhos")).rjust(5)}
-        #      3 - ITENS DE CARRINHOS: {str(self.get_documents_count(collection_name="itensCarrinho")).rjust(5)}
+        #      3 - ITENS DE CARRINHOS: {str(self.get_documents_count(collection_name="itensCarrinhos")).rjust(5)}
         #
         #  CRIADO POR: {self.created_by}
         #

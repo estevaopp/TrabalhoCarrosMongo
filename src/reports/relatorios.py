@@ -48,7 +48,7 @@ class Relatorio:
         mongo = MongoQueries()
         mongo.connect()
         # Realiza uma consulta no mongo e retorna o cursor resultante para a variável
-        query_result = mongo.db['itensCarrinho'].aggregate([{
+        query_result = mongo.db['itensCarrinhos'].aggregate([{
                                                             '$lookup':{'from':'produtos',
                                                                        'localField':'codigo_produto',
                                                                        'foreignField':'codigo_produto',

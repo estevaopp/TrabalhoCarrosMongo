@@ -18,27 +18,8 @@ class Controller_Carrinho:
         self.mongo.connect()
 
         data_hoje = datetime.today().strftime("%m-%d-%Y")
-        proximo_carrinho = self.mongo.db["carrinhos"].aggregate([
-                                                            {
-                                                                '$group': {
-                                                                    '_id': '$carrinhos', 
-                                                                    'proximo_carrinho': {
-                                                                        '$max': '$id_carrinho'
-                                                                    }
-                                                                }
-                                                            }, {
-                                                                '$project': {
-                                                                    'proximo_carrinho': {
-                                                                        '$sum': [
-                                                                            '$proximo_carrinho', 1
-                                                                        ]
-                                                                    }, 
-                                                                    '_id': 0
-                                                                }
-                                                            }
-                                                        ])
 
-        proximo_carrinho = int(list(proximo_carrinho)[0]['proximo_carrinho'])
+        proximo_carrinho = input("Selecione o Id do carrinho")
         # Cria um dicionário para mapear as variáveis de entrada e saída
         data = dict(id_carrinho=proximo_carrinho, data_criacao=data_hoje)
         # Insere e Recupera o código do novo carrinho
